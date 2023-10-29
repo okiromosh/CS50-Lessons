@@ -1,0 +1,23 @@
+A way for django to remember which client is which
+    and store data about a particular session
+
+In app-name views.py
+        def index(request):
+            # to create data for individual sessions
+            if "tasks" not in request.session:
+                # if this session doesnt have a tasks variable
+                # create a new list [] for it
+                request.session["tasks"] = []
+
+            return render(request, "tasks/index.html", {
+                "tasks": request.session["tasks"]
+            })
+
+
+
+To give django access to the created session table
+In Terminal
+        >python manage.py migrate
+
+
+Sessions are determined by cookies

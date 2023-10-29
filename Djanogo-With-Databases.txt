@@ -1,0 +1,146 @@
+Relational database:
+        stores data in a table
+
+
+-------------------------------------------------------------------
+        To create a table in Django
+
+    CREATE TABLE flights (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        origin TEXT NOT NULL,
+        destination TEXT NOT NULL,
+        duration INTEGER NOT NULL
+
+    );
+
+-----------------------------------
+        To insert data into table
+
+    INSERT INTO flights
+            (origin, destination, duration)
+        VALUES("New York", "London", 415);
+
+------------------------------------
+        To get data out of a table
+
+    SELECT * FROM flights;
+    # select(SELECT) all(*) from(FROM) flights(table-name)
+
+    SELECT origin, destination FROM flights;
+    # selects specific columns
+
+    SELECT * FROM flights WHERE id = 3;
+    # selects specific rows
+
+    SELECT * FROM flights WHERE origin = "New York";
+
+    SELECT * FROM flight WHERE duration > 500;
+    # select with boolean values
+
+    SELECT * FROM flights WHERE duration > 500 AND destination = "Paris"
+    # select using multiple conditions
+
+    SELECT * FROM flights WHERE origin LIKE "%a%";
+    # looks for data in origin where the name includes a between/or with other chars. eg. (Shanghai)
+
+---------------------------------------------------------
+        To update data in a table
+
+    UPDATE flights SET duration = 430 WHERE origin = "New York" AND destination = "London";
+
+-----------------------------------------------------------
+        To delete data from a table
+
+    DELETE FROM flights WHERE destination = "Tokyo";
+
+-----------------------------------------------------------------------
+In terminal
+        >touch flights.sql          # touch creates a file named flights.sql
+        >sqlite3 flights.sql         # launches sqlite programme and runs flights.sql
+        sqlite> CREATE TABLE flights (
+           ...> id INTEGER PRIMARY KEY AUTOINCREMENT,
+           ...> origin TEXT NOT NULL,
+           ...> destination TEXT NOT NULL,
+           ...> duration INTEGER NOT NULL
+           ...> );
+
+        sqlite> .tables              # shows all current tables in a database
+
+        # inserting data
+        sqlite> INSERT INTO flights (origin, destination, duration) VALUES ("New York", "London", 415);
+        sqlite> INSERT INTO flights (origin, destination, duration) VALUES ("New York", "London", 415);
+
+        # beautify data
+        sqlite> .mode columns
+        sqlite> .headers yes
+        sqlite> SELECT * FROM flights
+                           #             id          origin      destination  duration
+                                ----------  ----------  -----------  ----------
+                                1           New York    London       415
+                                2           Shanghai    Paris        760
+                                3           Istanbul    Tokyo        700
+                                4           New York    Paris        435
+                                5           Moscow      Paris        245
+                                6           Lima        New York     455
+
+==========================================================================================
+                        Table Relationships Using Foreign Keys
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

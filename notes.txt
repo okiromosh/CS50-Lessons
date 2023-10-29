@@ -1,0 +1,169 @@
+To install
+    >pip install django
+
+To start a project
+    >django-admin startproject <project-name>
+
+    >django-admin startproject CS50Django
+OR  >django-admin startproject CS50Django .             # To start in current folder
+
+
+To create an app in the project
+    >python manage.py startapp <app-name>
+    >python manage.py startapp hello
+
+To run a project
+    >python manage.py runserver
+
+---------------------------------------------------------------------------------------------------
+                        Dynamic url links
+In app-name > views.py
+    def greet(request, name):
+    # this creates a dynamic function that takes any name
+        return HttpResponse(f"Hello, {name}!")
+
+In app-name > urls.py
+    # dynamic url for greet path.
+    # defined with <> syntax
+        path("<str:name>", views.greet, name="greet"),
+
+---------------------------------------------------------------------------------------------------
+                        Displaying webpages using Render
+
+    1. In the app folder, create a templates folder
+        In the templates folder create a folder to contain html files for each app. hello folder.
+        In the hello folder create the html file and write code to it.
+
+    2. To define dynamic content in the html page, we use the {{}} syntax.
+        Eg.
+            <body>
+                <h1>Hello, {{ name }}!</h1>
+            </body>
+
+In app-name > views.py
+    def index(request):
+        return render(request, "template-name")
+        return render(request, "hello/index.htm")
+
+
+Render a html page with a variable within.
+
+In app-name > views.py
+    def greet(request, name):
+        return render(request, "hello/greet.html",
+        {"name":name.capitalize()})
+
+------------------------------------------------------------------------------------------------
+                        USING a template
+    1. Used when multiple pages have certain same layouts
+    2. To define an area to dynamically change for each page, we use {{ block block-name }}
+            <body>
+                {{ block body }}
+                {{ endblock }}
+            </body>
+
+    3. For every individual page, should call the layout template
+            {% extends "layout-file" %}
+            {% extends "tasks/layout.html"%}
+
+            To add content to the block, we first call that block
+                {% block body% }
+                    content
+                {% endblock %}
+
+-----------------------------------------------------------------------------------------
+
+                Using Logic/Conditions to render dynamic Pages
+
+    1. To use logic in html we use the {% %} syntax
+    2. In the function, {} defines the context/conditions the functions has  to
+        apply to display/render the html page.
+        In this case, the condition to check is if the month is Jan and the day is 1st.
+
+In app-name > views.py
+    def index(request):
+    now = datetime.datetime.now()
+    return render(request, "newyear/index.html",{
+        "check": now.month == 1 and now.day == 1
+    },)
+
+    3. In the html page writing an if statement is to check against variable check.
+In newyear > templates > newyear > index.html
+
+        <body>
+        {% if check %}
+          <h1>YES</h1>
+        {% else %}
+          <h1>NO</h1>
+        {% endif %}
+      </body>
+
+To dynamically link a stylesheet
+   {% load static %}
+
+    <head>
+        <link href="{% static 'newyear/style.css' %}" rel="stylesheet">
+    </head>
+
+----------------------------------------------------------------------------------------------
+                        HTML Dynamic Links
+    1. To link dynamically to a webpage, we define using the name="" given in urls.py
+        ie. for add page the path was
+            path("add", views.add, name="add")
+
+        <body>
+            <a href="{% url 'add' %}">Add tasks</a>
+        </body>
+
+    2. To avoid name space collisions, where multiple apps have the same page name.
+        we define each apps urls with and identifier   thus.
+
+        In app-name > urls.py
+            app_name = "tasks"
+
+        In html page
+            <body>
+                <a href="{% url 'tasks:add' %}">Add tasks</a>
+            </body>
+
+
+ CSRF Cross Site Request Forgery
+    Authenticates any form submissions
+ CSRF Token: Unique code generated for each session
+        {% csrf_token %}
+---------------------------------------------------------------------------------------------
+                        Django Forms
+
+
+===============================================================================================
+                path('tasks/', include("tasks.urls")),
+           when 'tasks/' url is called, will direct to task's 'urls.py' file
+
+  ----------------------------------
+                def index(request):
+    return render(request, "tasks/index.html", {
+        "tasks": tasks
+    })
+
+    return
+        tell the code to return/output something
+    render()
+        tell the code to interpret whatever is inside this function
+    (request
+        interprets the clients input/request
+    "tasks/index.html"
+        call the html file and interprets it
+    {"tasks": task})
+        tells the code that there's additional parameters to call. i.e.
+            the parameter "tasks": will have the values of variable task
+
+
+
+--------------------------------
+        NOTES
+1. Everytime you create a new app
+    Add the app to INSTALLED_APPS in
+                Project > settings.py
+
+    Add to urlpatterns in
+                Project > urls.py

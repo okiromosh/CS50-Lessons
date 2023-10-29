@@ -1,0 +1,45 @@
+
+In app-name > views.py
+    from django  import forms
+
+        class NewTaskForm(forms.Form):
+            task = forms.CharField(label="new task")
+            # can add more fields, with more parameters'
+            # These are client side validations'
+            priority = forms.IntegerField(label="Priority", min_value=1, max_value=10)
+
+
+    # Server Side validation.
+    def add(request):
+    if request.method == "POST":
+        form = NewTaskForm(request.POST)
+        # if client request/action is posting/submitting data, create a new form and add the client's submission
+        if form.is_valid():
+        # check if form is valid, and that data is provided in right format
+            task = form.cleaned_data["task"]
+            # get data from form(cleaned_data), get task["task"], save it to variable task.
+            tasks.append(task)
+            # To redirect back to tasks page
+            return HttpResponseRedirect
+        else:
+        # if its not valid, render the same page again, but pass in the form they created to see the errors
+            return render(request, "tasks/add.html", {
+                "form": form
+            })
+
+    # if the client just wanted to get "GET" the page, then render this
+    return render(request,  "tasks/add.html", {
+        "form": NewTaskForm,
+    })
+
+
+
+In html page
+
+        <body>
+            <form action="{% url 'tasks:add' %}" method="post">
+            {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="submit">
+            </form>
+        </body
